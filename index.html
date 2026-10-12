@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050b18">
+  <title>StudyMate — Smart Study Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#home">
+      <span class="brand-icon">✦</span>
+      <span>StudyMate<small>PLAN · STUDY · ACHIEVE</small></span>
+    </a>
+
+    <nav>
+      <a href="#home" class="nav-link active">⌂ <span>Dashboard</span></a>
+      <a href="#tasks" class="nav-link">☑ <span>My Tasks</span></a>
+      <a href="#focus" class="nav-link">◷ <span>Focus Timer</span></a>
+      <a href="#analytics" class="nav-link">▥ <span>Study Analytics</span></a>
+      <a href="#notes" class="nav-link">▤ <span>My Notes</span></a>
+      <a href="#calendar" class="nav-link">▦ <span>Calendar</span></a>
+      <a href="#settings" class="nav-link">⚙ <span>Settings</span></a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="mini-quote">“Small steps every day lead to big results.”</div>
+      <button class="secondary-btn full" id="exportBtn">⇩ Export my data</button>
+      <p class="muted tiny">Saved locally in this browser.</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Open navigation">☰</button>
+      <div class="top-title">
+        <div class="eyebrow" id="todayLabel">YOUR PERSONAL WORKSPACE</div>
+        <h1>My Dashboard <span class="spark">✦</span></h1>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeBtn" title="Switch theme">☼</button>
+        <div class="avatar" aria-label="StudyMate profile">S</div>
+      </div>
+    </header>
+
+    <section id="home" class="hero panel">
+      <div class="hero-content">
+        <span class="pill">✦ YOUR DAILY RESET</span>
+        <h2 id="greeting">Ready to make today count?</h2>
+        <p>Organize your subjects, focus on your goals, and celebrate your progress.</p>
+        <a href="#tasks" class="primary-btn">Plan my day →</a>
+      </div>
+      <div class="hero-orb" aria-hidden="true"><span>✦</span><i></i><b></b></div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card panel">
+        <div class="stat-icon blue">☑</div>
+        <p>Tasks today</p>
+        <h3 id="taskStat">0</h3>
+        <small id="taskStatSub">0 completed</small>
+      </article>
+      <article class="stat-card panel">
+        <div class="stat-icon purple">◷</div>
+        <p>Focus minutes today</p>
+        <h3 id="minutesStat">0</h3>
+        <small id="sessionStat">0 focus sessions</small>
+      </article>
+      <article class="stat-card panel">
+        <div class="stat-icon green">▤</div>
+        <p>Study notes</p>
+        <h3 id="noteStat">0</h3>
+        <small>Ideas saved</small>
+      </article>
+      <article class="stat-card panel">
+        <div class="stat-icon orange">↗</div>
+        <p>Tasks completed</p>
+        <h3 id="completionStat">0%</h3>
+        <small id="completionSub">Across all tasks</small>
+      </article>
+    </section>
+
+    <div class="content-grid">
+      <section id="tasks" class="panel section-panel">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">STAY ORGANIZED</div>
+            <h2>My Tasks</h2>
+          </div>
+          <span class="pill" id="taskCount">0 tasks</span>
+        </div>
+
+        <form id="taskForm" class="task-form">
+          <input id="taskInput" maxlength="120" placeholder="What do you need to do?" required>
+          <select id="taskSubject" aria-label="Subject">
+            <option>General</option>
+            <option>Mathematics</option>
+            <option>Science</option>
+            <option>Physics</option>
+            <option>Chemistry</option>
+            <option>Biology</option>
+            <option>English</option>
+            <option>Social Studies</option>
+            <option>Computer Science</option>
+            <option>Other</option>
+          </select>
+          <select id="taskPriority" aria-label="Task priority">
+            <option value="High">High</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="Low">Low</option>
+          </select>
+          <input id="taskDate" type="date" aria-label="Task due date" required>
+          <button class="primary-btn" type="submit">+ Add task</button>
+        </form>
+
+        <div class="filter-row" id="taskFilters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="active">Pending</button>
+          <button class="filter-btn" data-filter="completed">Completed</button>
+        </div>
+        <div id="taskList" class="task-list"></div>
+        <div class="empty-state hidden" id="taskEmpty">✨ Add your first task.</div>
+      </section>
+
+      <section id="focus" class="panel section-panel focus-panel">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">DEEP WORK</div>
+            <h2>Focus Timer</h2>
+          </div>
+          <span class="pill" id="timerModeLabel">FOCUS</span>
+        </div>
+
+        <label class="field-label" for="focusSubject">Study subject</label>
+        <select id="focusSubject" class="wide-select">
+          <option>General</option>
+          <option>Mathematics</option>
+          <option>Science</option>
+          <option>Physics</option>
+          <option>Chemistry</option>
+          <option>Biology</option>
+          <option>English</option>
+          <option>Social Studies</option>
+          <option>Computer Science</option>
+          <option>Other</option>
+        </select>
+
+        <div class="timer-wrap">
+          <svg class="timer-ring" viewBox="0 0 220 220" aria-label="Timer progress">
+            <circle class="ring-track" cx="110" cy="110" r="94"/>
+            <circle class="ring-progress" id="timerProgress" cx="110" cy="110" r="94"/>
+          </svg>
+          <div class="timer-center">
+            <strong id="timerDisplay">25:00</strong>
+            <span id="timerModeText">Focus time</span>
+          </div>
+        </div>
+
+        <div class="timer-modes">
+          <button class="filter-btn active" data-minutes="25" data-mode="focus">Focus 25m</button>
+          <button class="filter-btn" data-minutes="5" data-mode="short">Break 5m</button>
+          <button class="filter-btn" data-minutes="15" data-mode="long">Break 15m</button>
+        </div>
+        <div class="timer-controls">
+          <button class="primary-btn" id="startTimer">▶ Start</button>
+          <button class="secondary-btn" id="resetTimer">↻ Reset</button>
+        </div>
+        <p class="muted center" id="timerHint">Focus on one task at a time.</p>
+        <p class="sound-status" id="soundStatus">🔔 Timer alerts are enabled when supported.</p>
+      </section>
+
+      <section id="analytics" class="panel section-panel analytics-panel">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">YOUR PROGRESS</div>
+            <h2>Study Analytics</h2>
+          </div>
+          <span class="pill">LAST 7 DAYS</span>
+        </div>
+
+        <div class="analytics-summary">
+          <div>
+            <span class="muted">Total study time</span>
+            <strong id="weeklyMinutes">0 min</strong>
+          </div>
+          <div>
+            <span class="muted">Daily average</span>
+            <strong id="dailyAverage">0 min</strong>
+          </div>
+        </div>
+        <div class="chart" id="weeklyChart" aria-label="Study minutes per day"></div>
+        <div class="chart-legend">Focus minutes recorded by completed focus timers.</div>
+
+        <h3 class="subheading">Time by subject</h3>
+        <div id="subjectAnalytics" class="subject-analytics"></div>
+        <div id="analyticsEmpty" class="empty-state hidden">Complete a focus session to start your analytics.</div>
+      </section>
+
+      <section id="calendar" class="panel section-panel calendar-panel">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">PLAN AHEAD</div>
+            <h2>Calendar</h2>
+          </div>
+          <div class="calendar-nav">
+            <button class="icon-btn" id="prevMonth" aria-label="Previous month">‹</button>
+            <button class="icon-btn" id="nextMonth" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="calendar-title" id="calendarTitle"></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <div class="selected-date-panel">
+          <strong id="selectedDateLabel">Selected date</strong>
+          <span id="selectedDateCount">0 tasks</span>
+        </div>
+        <div id="calendarTaskList" class="calendar-task-list"></div>
+        <button class="secondary-btn full" id="planDateBtn">＋ Plan task for this date</button>
+      </section>
+
+      <section id="notes" class="panel section-panel notes-panel">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">CAPTURE YOUR IDEAS</div>
+            <h2>Quick Notes</h2>
+          </div>
+          <button class="primary-btn" id="newNoteBtn">+ New note</button>
+        </div>
+        <input id="noteSearch" class="search-input" placeholder="Search your notes...">
+        <form id="noteForm" class="note-form hidden">
+          <input id="noteTitle" maxlength="100" placeholder="Note title" required>
+          <textarea id="noteBody" maxlength="10000" rows="4" placeholder="Write your ideas here..." required></textarea>
+          <div class="form-actions">
+            <button class="primary-btn" type="submit" id="saveNoteBtn">Save note</button>
+            <button class="secondary-btn" type="button" id="cancelNoteBtn">Cancel</button>
+          </div>
+        </form>
+        <div id="noteList" class="note-grid"></div>
+        <div class="empty-state hidden" id="noteEmpty">📝 Create your first note.</div>
+      </section>
+    </div>
+
+    <section id="settings" class="panel section-panel settings-panel">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">MAKE IT YOURS</div>
+          <h2>Settings & Notifications</h2>
+        </div>
+      </div>
+      <div class="settings-grid">
+        <div class="setting-row">
+          <div>
+            <strong>Sound alerts</strong>
+            <p class="muted">Play a sound when a timer finishes.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="soundToggle" checked>
+            <span></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div>
+            <strong>Browser notifications</strong>
+            <p class="muted" id="notificationStatus">Allow alerts when a timer finishes.</p>
+          </div>
+          <button class="secondary-btn" id="notificationBtn">Enable</button>
+        </div>
+        <div class="setting-row">
+          <div>
+            <strong>Theme</strong>
+            <p class="muted">Switch between dark and light appearance.</p>
+          </div>
+          <button class="secondary-btn" id="settingsThemeBtn">Switch theme</button>
+        </div>
+        <div class="setting-row">
+          <div>
+            <strong>Backup your data</strong>
+            <p class="muted">Download tasks, notes, and study records.</p>
+          </div>
+          <button class="secondary-btn" id="settingsExportBtn">Export JSON</button>
+        </div>
+      </div>
+      <p class="muted tiny settings-note">Browser notifications require permission and may need the app to be open. Sound begins after you interact with the page.</p>
+    </section>
+
+    <section class="bottom-banner panel">
+      <div class="banner-symbol">✦</div>
+      <div>
+        <h3 id="quoteText">The secret of getting ahead is getting started.</h3>
+        <p id="quoteAuthor">— Mark Twain</p>
+      </div>
+      <button class="secondary-btn" id="newQuoteBtn">New quote ↗</button>
+    </section>
+
+    <footer>StudyMate <span>·</span> Build better habits, one day at a time.</footer>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
